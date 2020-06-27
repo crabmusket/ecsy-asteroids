@@ -7,9 +7,9 @@
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-    <link type="text/css" rel="stylesheet" href="./styles/main.css" />
+    <link type="text/css" rel="stylesheet" href="./main.css" />
     <script type="module">
-      import { Component, System } from "https://unpkg.com/ecsy@0.3.1";
+      import { Component, System } from "https://unpkg.com/ecsy@0.3.1?module";
       import { ECSYThreeWorld, Object3DComponent, Types } from "https://unpkg.com/ecsy-three@0.0.6?module";
       import {
         initialize,
@@ -86,7 +86,7 @@
             new Mesh(
               new BoxBufferGeometry(20, 20, 20),
               new MeshBasicMaterial({
-                map: new TextureLoader().load("./textures/crate.gif")
+                map: new TextureLoader().load("https://cdn.glitch.com/6ba7eebb-530e-4f8d-ac73-5ca75e7b1468%2Fcrate.gif?v=1593219591626")
               })
             ),
             scene
@@ -102,7 +102,7 @@
             new Mesh(
               new BoxBufferGeometry(1, 1, 1),
               new MeshBasicMaterial({
-                map: new TextureLoader().load("./textures/crate.gif")
+                map: new TextureLoader().load("https://cdn.glitch.com/6ba7eebb-530e-4f8d-ac73-5ca75e7b1468%2Fcrate.gif?v=1593219591626")
               })
             ),
             scene
@@ -113,7 +113,7 @@
           .addComponent(Position, { value: new Vector3(2, 0, 0) })
           .addComponent(Rotating, { speed: -2 })
           .addComponent(GLTFLoader, {
-            url: "./models/Duck.glb",
+            url: "https://cdn.glitch.com/6ba7eebb-530e-4f8d-ac73-5ca75e7b1468%2FDuck.glb?v=1593219579469",
             parent: scene
           });
 
