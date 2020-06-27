@@ -9,8 +9,8 @@
     />
     <link type="text/css" rel="stylesheet" href="./styles/main.css" />
     <script type="module">
-      import { Component, System } from "https://cdn.pika.dev/ecsy@0.3.0";
-      import { ECSYThreeWorld, Object3DComponent, Types } from "https://cdn.pika.dev/ecsy-three@0.0.6";
+      import { Component, System } from "https://unpkg.com/ecsy@0.3.0/build/ecsy.module.js";
+      import { ECSYThreeWorld, Object3DComponent, Types } from "https://unpkg.com/ecsy-three@0.0.6?module";
       import {
         initialize,
         // Components
@@ -18,7 +18,7 @@
         // Systems
         GLTFLoaderSystem,
         Position
-      } from "https://cdn.pika.dev/ecsy-three@0.0.6/extras";
+      } from "https://unpkg.com/ecsy-three@0.0.6/extras?module";
       import {
         AmbientLight,
         Mesh,
@@ -26,7 +26,7 @@
         MeshBasicMaterial,
         TextureLoader,
         Vector3
-      } from "https://cdn.pika.dev/three@0.117.0";
+      } from "https://unpkg.com/three@0.118.1?module";
 
       class Rotating extends Component {}
       Rotating.schema = {
