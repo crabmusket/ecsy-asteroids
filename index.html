@@ -11,7 +11,7 @@
     <script type="module">
       import { Component, System, Types } from 'https://unpkg.com/ecsy@0.4.0?module';
       window.process = { env: { NODE_ENV: "development" } };
-      import { initialize, Object3DComponent } from "https://unpkg.com/ecsy-three@0.1.1?module";
+      import { initialize, Object3DComponent } from "https://unpkg.com/ecsy-three@0.1.2?module";
       import {
         AmbientLight,
         Mesh,
@@ -60,7 +60,7 @@
         const mesh = new Mesh(
           new BoxBufferGeometry(),
           new MeshBasicMaterial({
-            map: new TextureLoader().load("./textures/crate.gif"),
+            map: new TextureLoader().load("https://cdn.glitch.com/6ba7eebb-530e-4f8d-ac73-5ca75e7b1468%2Fcrate.gif?v=1593219591626"),
           })
         );
 
