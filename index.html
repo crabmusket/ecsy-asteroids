@@ -10,6 +10,7 @@
     <link type="text/css" rel="stylesheet" href="./main.css" />
     <script type="module">
       import { Component, System, Types } from 'https://unpkg.com/ecsy@0.4.0/build/ecsy.module.js';
+      window.process = { env: { NODE_ENV: "development" } };
       import { initialize, Object3DComponent } from "https://unpkg.com/ecsy-three@0.1.1?module";
       import {
         AmbientLight,
