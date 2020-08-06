@@ -8,9 +8,12 @@
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
     <link type="text/css" rel="stylesheet" href="./main.css" />
+    <script type="javascript">
+      // #
+      window.process = { env: { NODE_ENV: "development" } };
+    </script>
     <script type="module">
       import { Component, System, Types } from 'https://unpkg.com/ecsy@0.4.0?module';
-      window.process = { env: { NODE_ENV: "development" } };
       import { initialize, Object3DComponent } from "https://unpkg.com/ecsy-three@0.1.2?module";
       import {
         AmbientLight,
