@@ -9,7 +9,7 @@
     />
     <link type="text/css" rel="stylesheet" href="./main.css" />
     <script type="module">
-      import { Component, System, Types } from 'https://unpkg.com/ecsy@0.4.0/build/ecsy.module.js';
+      import { Component, System, Types } from 'https://unpkg.com/ecsy@0.4.0?module';
       window.process = { env: { NODE_ENV: "development" } };
       import { initialize, Object3DComponent } from "https://unpkg.com/ecsy-three@0.1.1?module";
       import {
@@ -19,7 +19,7 @@
         MeshBasicMaterial,
         TextureLoader,
         Vector3
-      } from "https://unpkg.com/three@0.118.1?module";
+      } from "https://unpkg.com/three@0.119.1?module";
 
       class Rotating extends Component {}
       Rotating.schema = {
