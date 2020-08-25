@@ -14,6 +14,12 @@ import {
 } from "./components.js";
 
 export class RotatingSystem extends System {
+  static get queries() {
+    return {
+      entities: { components: [Rotating, Object3D] },
+    };
+  }
+
   execute(delta) {
     let entities = this.queries.entities.results;
     for (let i = 0; i < entities.length; i++) {
@@ -28,13 +34,15 @@ export class RotatingSystem extends System {
   }
 }
 
-RotatingSystem.queries = {
-  entities: { components: [Rotating, Object3D] }
-};
-
 const TIMER_TIME = 1;
 
 export class PulsatingColorSystem extends System {
+  static get queries() {
+    return {
+      entities: { components: [PulsatingColor, Object3D] },
+    };
+  }
+
   execute(delta, time) {
     time *= 1000;
     let entities = this.queries.entities.results;
@@ -59,11 +67,13 @@ export class PulsatingColorSystem extends System {
   }
 }
 
-PulsatingColorSystem.queries = {
-  entities: { components: [PulsatingColor, Object3D] }
-};
-
 export class PulsatingScaleSystem extends System {
+  static get queries() {
+    return {
+      entities: { components: [PulsatingScale] },
+    };
+  }
+
   execute(delta, time) {
     let entities = this.queries.entities.results;
     for (let i = 0; i < entities.length; i++) {
@@ -86,11 +96,13 @@ export class PulsatingScaleSystem extends System {
   }
 }
 
-PulsatingScaleSystem.queries = {
-  entities: { components: [PulsatingScale] }
-}
-
 export class MovingSystem extends System {
+  static get queries() {
+    return {
+      entities: { components: [Moving] },
+    };
+  }
+
   execute(delta, time) {
     let entities = this.queries.entities.results;
     for (let i = 0; i < entities.length; i++) {
@@ -104,11 +116,13 @@ export class MovingSystem extends System {
   }
 }
 
-MovingSystem.queries = {
-  entities: { components: [Moving] }
-};
-
 export class TimeoutSystem extends System {
+  static get queries() {
+    return {
+      entities: { components: [Timeout] },
+    };
+  }
+
   execute(delta) {
     let entities = this.queries.entities.results;
     for (let i = 0; i < entities.length; i++) {
@@ -131,13 +145,16 @@ export class TimeoutSystem extends System {
   }
 }
 
-TimeoutSystem.queries = {
-  entities: { components: [Timeout] }
-};
-
 let ballWorldPos = new THREE.Vector3();
 
 export class ColliderSystem extends System {
+  static get queries() {
+    return {
+      boxes: { components: [Collidable] },
+      balls: { components: [Collider] },
+    };
+  }
+
   execute() {
     let boxes = this.queries.boxes.results;
     let balls = this.queries.balls.results;
@@ -181,8 +198,3 @@ export class ColliderSystem extends System {
     }
   }
 }
-
-ColliderSystem.queries = {
-  boxes: { components: [Collidable] },
-  balls: { components: [Collider] }
-};
