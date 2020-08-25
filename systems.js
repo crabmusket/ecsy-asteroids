@@ -1,5 +1,5 @@
-import THREE from "https://unpkg.com/three@0.119.1?module";
-import { System } from "https://unpkg.com/ecsy@0.4.1?module;
+import * as THREE from "https://unpkg.com/three@0.119.1?module";
+import { System } from "https://unpkg.com/ecsy@0.4.1?module";
 import {
   Object3D,
   Collidable,
@@ -11,7 +11,7 @@ import {
   PulsatingColor,
   Colliding,
   Rotating
-} from "./components.mjs";
+} from "./components.js";
 
 export class RotatingSystem extends System {
   execute(delta) {

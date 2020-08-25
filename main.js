@@ -1,4 +1,6 @@
-import THREE from "https://unpkg.com/three@0.119.1?module";
+window.process = {env: {NODE_ENV: "debug"}};
+
+import * as THREE from "https://unpkg.com/three@0.119.1?module";
 import { World } from 'https://unpkg.com/ecsy@0.4.1?module';
 import { Object3D, Collidable, Collider, Recovering, Moving, PulsatingScale, Timeout, PulsatingColor, Colliding, Rotating } from './components.js';
 import { RotatingSystem, ColliderSystem, PulsatingColorSystem, PulsatingScaleSystem, MovingSystem,TimeoutSystem } from './systems.js';
@@ -43,7 +45,7 @@ function randomSpherePoint(radius) {
 
 var objMoving, states;
 function init() {
-  var numObjects = 100;
+  var numObjects = 1000;
   var size = 0.2;
   var w = 100;
 

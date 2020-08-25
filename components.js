@@ -39,9 +39,6 @@ export class PulsatingColor extends Component {
   }
 }
 
-PulsatingColor.schema = {
-};
-
 export class Colliding extends Component {
   static get schema() {
     return {
