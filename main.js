@@ -1,13 +1,14 @@
 window.process = {env: {NODE_ENV: "debug"}};
 
 import * as THREE from "./three.js";
-import { World } from './ecsy/src/index.js';
-import { Object3D } from './components.js';
+import * as Ecsy from './ecsy/src/index.js';
+import * as components from './components.js';
 
-const world = new World();
+const world = new Ecsy.World();
 
 world
-  .registerComponent(Object3D)
+  .registerComponent(components.Object3D)
+  .registerComponent(components.Asteroid)
 
 main();
 

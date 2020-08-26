@@ -1,18 +1,5 @@
 import { TagComponent, Component, Types } from "./ecsy/src/index.js";
 
-export class Collidable extends TagComponent {}
-export class Collider extends TagComponent {}
-export class Recovering extends TagComponent {}
-export class Moving extends TagComponent {}
-
-export class PulsatingScale extends Component {
-  static get schema() {
-    return {
-      offset: { type: Types.Number, default: 0 },
-    };
-  }
-}
-
 export class Object3D extends Component {
   static get schema() {
     return {
@@ -21,7 +8,22 @@ export class Object3D extends Component {
   }
 }
 
-export class Timeout extends Component {
+// ---------------------------------------------------------------------------
+
+class Collidable extends TagComponent {}
+class Collider extends TagComponent {}
+class Recovering extends TagComponent {}
+class Moving extends TagComponent {}
+
+class PulsatingScale extends Component {
+  static get schema() {
+    return {
+      offset: { type: Types.Number, default: 0 },
+    };
+  }
+}
+
+class Timeout extends Component {
   static get schema() {
     return {
       timer: { type: Types.Number },
@@ -31,7 +33,7 @@ export class Timeout extends Component {
   }
 }
 
-export class PulsatingColor extends Component {
+class PulsatingColor extends Component {
   static get schema() {
     return {
       offset: { type: Types.Number },
@@ -39,7 +41,7 @@ export class PulsatingColor extends Component {
   }
 }
 
-export class Colliding extends Component {
+class Colliding extends Component {
   static get schema() {
     return {
       value: { type: Types.Boolean },
@@ -47,7 +49,7 @@ export class Colliding extends Component {
   }
 }
 
-export class Rotating extends Component {
+class Rotating extends Component {
   static get schema() {
     return {
       enabled: { type: Types.Boolean },

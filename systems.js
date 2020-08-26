@@ -1,19 +1,10 @@
 import * as THREE from "./three.js";
 import { System } from "./ecsy/src/index.js";
-import {
-  Object3D,
-  Collidable,
-  Collider,
-  Recovering,
-  Moving,
-  PulsatingScale,
-  Timeout,
-  PulsatingColor,
-  Colliding,
-  Rotating
-} from "./components.js";
+import * as components from "./components.js";
 
-export class RotatingSystem extends System {
+// ---------------------------------------------------------------------------
+
+class RotatingSystem extends System {
   static get queries() {
     return {
       entities: { components: [Rotating, Object3D] },
@@ -36,7 +27,7 @@ export class RotatingSystem extends System {
 
 const TIMER_TIME = 1;
 
-export class PulsatingColorSystem extends System {
+class PulsatingColorSystem extends System {
   static get queries() {
     return {
       entities: { components: [PulsatingColor, Object3D] },
@@ -67,7 +58,7 @@ export class PulsatingColorSystem extends System {
   }
 }
 
-export class PulsatingScaleSystem extends System {
+class PulsatingScaleSystem extends System {
   static get queries() {
     return {
       entities: { components: [PulsatingScale] },
@@ -96,7 +87,7 @@ export class PulsatingScaleSystem extends System {
   }
 }
 
-export class MovingSystem extends System {
+class MovingSystem extends System {
   static get queries() {
     return {
       entities: { components: [Moving] },
@@ -116,7 +107,7 @@ export class MovingSystem extends System {
   }
 }
 
-export class TimeoutSystem extends System {
+class TimeoutSystem extends System {
   static get queries() {
     return {
       entities: { components: [Timeout] },
@@ -147,7 +138,7 @@ export class TimeoutSystem extends System {
 
 let ballWorldPos = new THREE.Vector3();
 
-export class ColliderSystem extends System {
+class ColliderSystem extends System {
   static get queries() {
     return {
       boxes: { components: [Collidable] },
