@@ -18,6 +18,14 @@ export class Object3D extends Component {
   }
 }
 
+export class Player extends Component {
+  static get schema() {
+    return {
+      speed: {type: Types.Number}, // metres/second
+    };
+  }
+}
+
 // ---------------------------------------------------------------------------
 
 class Collidable extends TagComponent {}

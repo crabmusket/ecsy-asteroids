@@ -10,9 +10,11 @@ const world = new Ecsy.World();
 world
   .registerComponent(components.Object3D)
   .registerComponent(components.Asteroid)
+  .registerComponent(components.Player)
 
 world
   .registerSystem(systems.SpinningAsteroids)
+  .registerSystem(systems.PlayerMovement)
 
 main();
 
@@ -25,6 +27,9 @@ function main() {
   const scene = new THREE.Scene();
 
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.005, 10000);
+  let player = world.createEntity();
+  player.addComponent(components.Object3D, {object: camera});
+  player.addComponent(components.Player, {speed: 10});
 
   const root = new THREE.Object3D();
 

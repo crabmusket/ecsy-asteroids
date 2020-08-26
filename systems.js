@@ -1,6 +1,7 @@
 import * as THREE from "./three.js";
 import { System } from "./ecsy/src/index.js";
 import * as components from "./components.js";
+import { Pinput } from './pinput.js';
 
 export class SpinningAsteroids extends System {
   static get queries() {
@@ -19,6 +20,43 @@ export class SpinningAsteroids extends System {
       object.rotation.x += x * delta;
       object.rotation.y += y * delta * 2;
       object.rotation.z += z * delta * 3;
+    }
+  }
+}
+
+const INPUT = new Pinput();
+const FORWARDS = new THREE.Vector3(0, 0, -1);
+const RIGHT = new THREE.Vector3(1, 0, 0);
+
+export class PlayerMovement extends System {
+  static get queries() {
+    return {
+      entities: {components: [components.Player, components.Object3D]},
+    };
+  }
+
+  execute(delta) {
+    INPUT.update();
+
+    let entities = this.queries.entities.results;
+    for (let i = 0; i < entities.length; i++) {
+      let entity = entities[i];
+      let object = entity.getComponent(components.Object3D).object;
+      let {speed} = entity.getComponent(components.Player);
+      let forwards = FORWARDS.clone().transformDirection(object.matrixWorld);
+      let right = RIGHT.clone().transformDirection(object.matrixWorld);
+      if (INPUT.isDown('w')) {
+        object.position.addScaledVector(forwards, delta * speed);
+      }
+      if (INPUT.isDown('a')) {
+        object.position.addScaledVector(right, delta * -speed);
+      }
+      if (INPUT.isDown('s')) {
+        object.position.addScaledVector(forwards, delta * -speed);
+      }
+      if (INPUT.isDown('d')) {
+        object.position.addScaledVector(right, delta * speed);
+      }
     }
   }
 }
