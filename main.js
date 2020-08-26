@@ -46,7 +46,9 @@ function main() {
 
   scene.add(root);
 
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+  });
   renderer.setClearColor(0x080808);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
