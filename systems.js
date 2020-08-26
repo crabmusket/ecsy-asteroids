@@ -2,6 +2,27 @@ import * as THREE from "./three.js";
 import { System } from "./ecsy/src/index.js";
 import * as components from "./components.js";
 
+export class SpinningAsteroids extends System {
+  static get queries() {
+    return {
+      entities: {components: [components.Asteroid, components.Object3D]},
+    };
+  }
+
+  execute(delta) {
+    let entities = this.queries.entities.results;
+    for (let i = 0; i < entities.length; i++) {
+      let entity = entities[i];
+      let object = entity.getComponent(components.Object3D).object;
+      let {x, y, z} = entity.getComponent(components.Asteroid);
+
+      object.rotation.x += x * delta;
+      object.rotation.y += y * delta * 2;
+      object.rotation.z += z * delta * 3;
+    }
+  }
+}
+
 // ---------------------------------------------------------------------------
 
 class RotatingSystem extends System {

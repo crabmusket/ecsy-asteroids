@@ -1,5 +1,15 @@
 import { TagComponent, Component, Types } from "./ecsy/src/index.js";
 
+export class Asteroid extends Component {
+  static get schema() {
+    return {
+      x: {type: Types.Number},
+      y: {type: Types.Number},
+      z: {type: Types.Number},
+    };
+  }
+}
+
 export class Object3D extends Component {
   static get schema() {
     return {

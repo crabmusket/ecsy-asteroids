@@ -3,12 +3,16 @@ window.process = {env: {NODE_ENV: "debug"}};
 import * as THREE from "./three.js";
 import * as Ecsy from './ecsy/src/index.js';
 import * as components from './components.js';
+import * as systems from './systems.js';
 
 const world = new Ecsy.World();
 
 world
   .registerComponent(components.Object3D)
   .registerComponent(components.Asteroid)
+
+world
+  .registerSystem(systems.SpinningAsteroids)
 
 main();
 
@@ -39,7 +43,8 @@ function main() {
     randomisePosition(asteroid.position, w);
 
     let entity = world.createEntity();
-    entity.addComponent(Object3D, {object: asteroid});
+    entity.addComponent(components.Object3D, {object: asteroid});
+    entity.addComponent(components.Asteroid, randomAngularSpeeds());
 
     root.add(asteroid);
   }
@@ -76,5 +81,13 @@ function main() {
       w * (Math.random() * 2 - 1),
       w * (Math.random() * 2 - 1)
     );
+  }
+
+  function randomAngularSpeeds() {
+    return {
+      x: (Math.random() - 0.5) * 0.2,
+      y: (Math.random() - 0.5) * 0.2,
+      z: (Math.random() - 0.5) * 0.2,
+    };
   }
 }
