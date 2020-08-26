@@ -1,5 +1,5 @@
-import * as THREE from "https://unpkg.com/three@0.119.1?module";
-import { System } from "https://unpkg.com/ecsy@0.4.1?module";
+import * as THREE from "./three.js";
+import { System } from "./ecsy/src/index.js";
 import {
   Object3D,
   Collidable,

@@ -1,7 +1,7 @@
 window.process = {env: {NODE_ENV: "debug"}};
 
-import * as THREE from "https://unpkg.com/three@0.119.1?module";
-import { World } from 'https://unpkg.com/ecsy@0.4.1?module';
+import * as THREE from "./three.js";
+import { World } from './ecsy/src/index.js';
 import { Object3D, Collidable, Collider, Recovering, Moving, PulsatingScale, Timeout, PulsatingColor, Colliding, Rotating } from './components.js';
 import { RotatingSystem, ColliderSystem, PulsatingColorSystem, PulsatingScaleSystem, MovingSystem,TimeoutSystem } from './systems.js';
 
@@ -130,14 +130,14 @@ function main() {
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
   }
-  
+
   function animate() {
     let delta = clock.getDelta();
     let elapsedTime = clock.elapsedTime;
     //console.time('render');
     world.execute(delta, elapsedTime);
     //console.timeEnd('render');
-  
+
     renderer.render( scene, camera );
   }
 }

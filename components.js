@@ -1,4 +1,4 @@
-import { TagComponent, Component, Types } from "https://unpkg.com/ecsy@0.4.1?module";
+import { TagComponent, Component, Types } from "./ecsy/src/index.js";
 
 export class Collidable extends TagComponent {}
 export class Collider extends TagComponent {}
