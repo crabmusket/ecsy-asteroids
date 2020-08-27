@@ -34,7 +34,7 @@ function main() {
   player.addComponent(components.Object3D, {object: camera});
   player.addComponent(components.Player, {
     acceleration: 50,
-    drag: 10,
+    drag: 4,
     speedLimit: 20,
     rotAcceleration: 4,
     rotSpeedLimit: 8,
