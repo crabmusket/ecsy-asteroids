@@ -22,6 +22,7 @@ export class Player extends Component {
   static get schema() {
     return {
       speed: {type: Types.Number}, // metres/second
+      rotSpeed: {type: Types.Number}, // radians/second
     };
   }
 }

@@ -42,7 +42,21 @@ export class PlayerMovement extends System {
     for (let i = 0; i < entities.length; i++) {
       let entity = entities[i];
       let object = entity.getComponent(components.Object3D).object;
-      let {speed} = entity.getComponent(components.Player);
+      let {speed, rotSpeed} = entity.getComponent(components.Player);
+
+      if (INPUT.isDown('arrowleft')) {
+        object.rotateY(delta * rotSpeed);
+      }
+      if (INPUT.isDown('arrowright')) {
+        object.rotateY(delta * -rotSpeed);
+      }
+      if (INPUT.isDown('arrowup')) {
+        object.rotateX(delta * -rotSpeed);
+      }
+      if (INPUT.isDown('arrowdown')) {
+        object.rotateX(delta * rotSpeed);
+      }
+
       let forwards = FORWARDS.clone().transformDirection(object.matrixWorld);
       let right = RIGHT.clone().transformDirection(object.matrixWorld);
       if (INPUT.isDown('w')) {

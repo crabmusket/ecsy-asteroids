@@ -29,7 +29,7 @@ function main() {
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.005, 10000);
   let player = world.createEntity();
   player.addComponent(components.Object3D, {object: camera});
-  player.addComponent(components.Player, {speed: 10});
+  player.addComponent(components.Player, {speed: 10, rotSpeed: 1});
 
   const root = new THREE.Object3D();
 
