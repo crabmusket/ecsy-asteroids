@@ -2,7 +2,7 @@
 
 ## Evolution
 
-1. random spheres in space
+1. ✅ random spheres in space
 2. flying camera with acceleration
 3. asteroid collision
 4. asteroid meshes + slight rotation
