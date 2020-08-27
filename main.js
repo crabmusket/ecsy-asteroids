@@ -4,6 +4,7 @@ import * as THREE from 'https://unpkg.com/three@0.119.1?module';
 import * as Ecsy from 'https://unpkg.com/ecsy@0.4.1?module';
 import * as components from './components.js';
 import * as systems from './systems.js';
+import { Gyroscope } from './gyroscope.js';
 
 const world = new Ecsy.World();
 
@@ -27,6 +28,8 @@ function main() {
   const scene = new THREE.Scene();
 
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.005, 10000);
+  camera.add(makeMap());
+  scene.add(camera);
   let player = world.createEntity();
   player.addComponent(components.Object3D, {object: camera});
   player.addComponent(components.Player, {speed: 10, rotSpeed: 1});
@@ -94,5 +97,19 @@ function main() {
       y: (Math.random() - 0.5) * 0.2,
       z: (Math.random() - 0.5) * 0.2,
     };
+  }
+
+  function makeMap() {
+    let geometry = new THREE.EdgesGeometry(new THREE.CircleGeometry(0.3, 32));
+    let material = new THREE.LineBasicMaterial({color: 0xffff00});
+    let outline = new THREE.LineSegments(geometry, material);
+    outline.rotation.set(Math.PI/2, 0, 0);
+    outline.scale.set(0.5, 1, 1);
+    let gyro = new Gyroscope();
+    gyro.add(outline);
+    let group = new THREE.Group();
+    group.position.set(0, -0.25, -1);
+    group.add(gyro);
+    return group;
   }
 }
