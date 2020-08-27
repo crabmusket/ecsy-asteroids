@@ -109,19 +109,19 @@ function main() {
   }
 
   function makeMap() {
-    let geometry = new THREE.EdgesGeometry(new THREE.CircleGeometry(0.3, 32));
+    let geometry = new THREE.EdgesGeometry(new THREE.CircleGeometry(0.15, 32));
     let material = new THREE.LineBasicMaterial({color: 0xffff00});
     let outline = new THREE.LineSegments(geometry, material);
     let isoc = new THREE.IcosahedronGeometry(0.015);
     let isocMat = new THREE.MeshBasicMaterial({color: 0xffff00});
     let pointer = new THREE.Mesh(isoc, isocMat);
-    pointer.position.set(0, -0.3, 0);
+    pointer.position.set(0, -0.15, 0);
     outline.add(pointer);
     outline.rotation.set(Math.PI/2, 0, 0);
     let gyro = new Gyroscope();
     gyro.add(outline);
     let group = new THREE.Group();
-    group.position.set(0, -0.25, -1);
+    group.position.set(0, -0.4, -1);
     group.add(gyro);
     return group;
   }
