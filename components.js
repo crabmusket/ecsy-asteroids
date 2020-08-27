@@ -1,4 +1,4 @@
-import { TagComponent, Component, Types } from "./ecsy/src/index.js";
+import { TagComponent, Component, Types } from 'https://unpkg.com/ecsy@0.4.1?module';
 
 export class Asteroid extends Component {
   static get schema() {

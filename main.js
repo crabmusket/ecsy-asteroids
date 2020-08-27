@@ -1,7 +1,7 @@
 window.process = {env: {NODE_ENV: "debug"}};
 
-import * as THREE from "./three.js";
-import * as Ecsy from './ecsy/src/index.js';
+import * as THREE from 'https://unpkg.com/three@0.119.1?module';
+import * as Ecsy from 'https://unpkg.com/ecsy@0.4.1?module';
 import * as components from './components.js';
 import * as systems from './systems.js';
 
