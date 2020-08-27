@@ -21,8 +21,14 @@ export class Object3D extends Component {
 export class Player extends Component {
   static get schema() {
     return {
-      speed: {type: Types.Number}, // metres/second
-      rotSpeed: {type: Types.Number}, // radians/second
+      acceleration: {type: Types.Number},
+      drag: {type: Types.Number},
+      angularDrag: {type: Types.Number},
+      speedLimit: {type: Types.Number}, // metres/second
+      rotAcceleration: {type: Types.Number},
+      rotSpeedLimit: {type: Types.Number}, // radians/second
+      velocity: {type: Types.Ref},
+      angularVelocity: {type: Types.Ref},
     };
   }
 }

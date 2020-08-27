@@ -35,6 +35,13 @@ export class PlayerMovement extends System {
     };
   }
 
+  // These are to avoid allocation during updates. Completely unnecessary, but
+  // maybe good practise for more important systems :)
+  forwards = new THREE.Vector3();
+  right = new THREE.Vector3();
+  drag = new THREE.Vector3();
+  angDrag = new THREE.Vector3();
+
   execute(delta) {
     INPUT.update();
 
@@ -42,36 +49,51 @@ export class PlayerMovement extends System {
     for (let i = 0; i < entities.length; i++) {
       let entity = entities[i];
       let object = entity.getComponent(components.Object3D).object;
-      let {speed, rotSpeed} = entity.getComponent(components.Player);
-
-      if (INPUT.isDown('arrowleft')) {
-        object.rotateY(delta * rotSpeed);
-      }
-      if (INPUT.isDown('arrowright')) {
-        object.rotateY(delta * -rotSpeed);
-      }
-      if (INPUT.isDown('arrowup')) {
-        object.rotateX(delta * -rotSpeed);
-      }
-      if (INPUT.isDown('arrowdown')) {
-        object.rotateX(delta * rotSpeed);
-      }
-
-      let forwards = FORWARDS.clone().transformDirection(object.matrixWorld);
-      let right = RIGHT.clone().transformDirection(object.matrixWorld);
-      if (INPUT.isDown('w')) {
-        object.position.addScaledVector(forwards, delta * speed);
-      }
-      if (INPUT.isDown('a')) {
-        object.position.addScaledVector(right, delta * -speed);
-      }
-      if (INPUT.isDown('s')) {
-        object.position.addScaledVector(forwards, delta * -speed);
-      }
-      if (INPUT.isDown('d')) {
-        object.position.addScaledVector(right, delta * speed);
-      }
+      let player = entity.getMutableComponent(components.Player);
+      this.updateRotation(INPUT, object, player, delta);
+      this.updatePosition(INPUT, object, player, delta);
     }
+  }
+
+  updateRotation(INPUT, object, player, delta) {
+    this.angDrag.copy(player.angularVelocity).clampLength(0, player.angularDrag);
+    if (INPUT.isDown('arrowleft')) {
+      player.angularVelocity.y += delta * player.rotAcceleration;
+    }
+    if (INPUT.isDown('arrowright')) {
+      player.angularVelocity.y -= delta * player.rotAcceleration;
+    }
+    if (INPUT.isDown('arrowup')) {
+      player.angularVelocity.x -= delta * player.rotAcceleration;
+    }
+    if (INPUT.isDown('arrowdown')) {
+      player.angularVelocity.x += delta * player.rotAcceleration;
+    }
+    player.angularVelocity.addScaledVector(this.angDrag, delta * -1);
+    player.angularVelocity.clampLength(0, player.rotSpeedLimit);
+    object.rotateX(delta * player.angularVelocity.x);
+    object.rotateY(delta * player.angularVelocity.y);
+  }
+
+  updatePosition(INPUT, object, player, delta) {
+    this.forwards.copy(FORWARDS).transformDirection(object.matrixWorld);
+    this.right.copy(RIGHT).transformDirection(object.matrixWorld);
+    this.drag.copy(player.velocity).clampLength(0, player.drag);
+    if (INPUT.isDown('w')) {
+      player.velocity.addScaledVector(this.forwards, delta * player.acceleration);
+    }
+    if (INPUT.isDown('a')) {
+      player.velocity.addScaledVector(this.right, delta * -player.acceleration);
+    }
+    if (INPUT.isDown('s')) {
+      player.velocity.addScaledVector(this.forwards, delta * -player.acceleration);
+    }
+    if (INPUT.isDown('d')) {
+      player.velocity.addScaledVector(this.right, delta * player.acceleration);
+    }
+    player.velocity.addScaledVector(this.drag, delta * -1);
+    player.velocity.clampLength(0, player.speedLimit);
+    object.position.addScaledVector(player.velocity, delta);
   }
 }
 

@@ -32,7 +32,16 @@ function main() {
   scene.add(camera);
   let player = world.createEntity();
   player.addComponent(components.Object3D, {object: camera});
-  player.addComponent(components.Player, {speed: 10, rotSpeed: 1});
+  player.addComponent(components.Player, {
+    acceleration: 50,
+    drag: 10,
+    speedLimit: 20,
+    rotAcceleration: 4,
+    rotSpeedLimit: 8,
+    angularDrag: 2,
+    velocity: new THREE.Vector3(),
+    angularVelocity: new THREE.Vector3(),
+  });
 
   const root = new THREE.Object3D();
 
