@@ -69,10 +69,17 @@ export class PlayerMovement extends System {
     if (INPUT.isDown('arrowdown')) {
       player.angularVelocity.x += delta * player.rotAcceleration;
     }
+    if (INPUT.isDown('e')) {
+      player.angularVelocity.z -= delta * player.rotAcceleration * 0.5;
+    }
+    if (INPUT.isDown('q')) {
+      player.angularVelocity.z += delta * player.rotAcceleration * 0.5;
+    }
     player.angularVelocity.addScaledVector(this.angDrag, delta * -1);
     player.angularVelocity.clampLength(0, player.rotSpeedLimit);
     object.rotateX(delta * player.angularVelocity.x);
     object.rotateY(delta * player.angularVelocity.y);
+    object.rotateZ(delta * player.angularVelocity.z);
   }
 
   updatePosition(INPUT, object, player, delta) {
