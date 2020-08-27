@@ -103,8 +103,12 @@ function main() {
     let geometry = new THREE.EdgesGeometry(new THREE.CircleGeometry(0.3, 32));
     let material = new THREE.LineBasicMaterial({color: 0xffff00});
     let outline = new THREE.LineSegments(geometry, material);
+    let isoc = new THREE.IcosahedronGeometry(0.015);
+    let isocMat = new THREE.MeshBasicMaterial({color: 0xffff00});
+    let pointer = new THREE.Mesh(isoc, isocMat);
+    pointer.position.set(0, -0.3, 0);
+    outline.add(pointer);
     outline.rotation.set(Math.PI/2, 0, 0);
-    outline.scale.set(0.5, 1, 1);
     let gyro = new Gyroscope();
     gyro.add(outline);
     let group = new THREE.Group();
