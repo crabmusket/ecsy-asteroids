@@ -159,6 +159,10 @@ export class LaserBlastSystem extends System {
     blasts: {components: [components.LaserBlast, components.Object3D]},
   };
 
+  setParticles(mod) {
+    this.particles = mod;
+  }
+
   execute(delta) {
     let entities = this.queries.blasts.results;
     for (let i = entities.length - 1; i >= 0; i--) { // iterate backwards so we can remove
