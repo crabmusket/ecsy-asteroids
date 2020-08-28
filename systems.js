@@ -24,18 +24,23 @@ export class SpinningAsteroids extends System {
 
 const FORWARDS = new THREE.Vector3(0, 0, -1);
 const RIGHT = new THREE.Vector3(1, 0, 0);
+const UP = new THREE.Vector3(0, 1, 0);
 
 export class PlayerMovement extends System {
   static queries = {
     entities: {components: [components.Player, components.Object3D]},
   };
 
+  // TODO: what if multiple systems need access to input? Do they all create a
+  // different Pinput? Do we restrict input to one system and store the data
+  // in a component, which other systems read?
   input = new Pinput();
 
   // These are to avoid allocation during updates. Completely unnecessary, but
   // maybe good practise for more important systems :)
   forwards = new THREE.Vector3();
   right = new THREE.Vector3();
+  up = new THREE.Vector3();
   drag = new THREE.Vector3();
   angDrag = new THREE.Vector3();
 
@@ -49,6 +54,7 @@ export class PlayerMovement extends System {
       let player = entity.getMutableComponent(components.Player);
       this.updateRotation(object, player, delta);
       this.updatePosition(object, player, delta);
+      this.pewpew(object, player, delta);
     }
   }
 
@@ -77,11 +83,13 @@ export class PlayerMovement extends System {
     object.rotateX(delta * player.angularVelocity.x);
     object.rotateY(delta * player.angularVelocity.y);
     object.rotateZ(delta * player.angularVelocity.z);
+    object.updateMatrixWorld();
+    this.forwards.copy(FORWARDS).transformDirection(object.matrixWorld);
+    this.right.copy(RIGHT).transformDirection(object.matrixWorld);
+    this.up.copy(UP).transformDirection(object.matrixWorld);
   }
 
   updatePosition(object, player, delta) {
-    this.forwards.copy(FORWARDS).transformDirection(object.matrixWorld);
-    this.right.copy(RIGHT).transformDirection(object.matrixWorld);
     this.drag.copy(player.velocity).clampLength(0, player.drag);
     if (this.input.isDown('w')) {
       player.velocity.addScaledVector(this.forwards, delta * player.acceleration);
@@ -98,6 +106,72 @@ export class PlayerMovement extends System {
     player.velocity.addScaledVector(this.drag, delta * -1);
     player.velocity.clampLength(0, player.speedLimit);
     object.position.addScaledVector(player.velocity, delta);
+  }
+
+  bulletGeom = new THREE.IcosahedronGeometry(0.2);
+  bulletMat = new THREE.MeshBasicMaterial({color: '#f22', emissive: true});
+
+  // Okay this should _almost certainly_ be a separate system - I'm stretching the
+  // the usefulness of having an ECS in the first place by continuing to add player
+  // abilities to one big system. But I see no compelling reason to split this
+  // up just yet. The Player is a unique object in the game and has a lot of
+  // custom behaviour, and it's easiest to take care of it all in the one place
+  // until the game (and my understanding of how to use an ECS) beomes more mature.
+  pewpew(object, player, delta) {
+    // One idea for splitting this up: a component that gets attached to the
+    // player when shooting starts, and removed when it ends. It has its own
+    // system that handles the emitting of projectiles.
+    if (player.bulletTimeRemaining) {
+      player.bulletTimeRemaining =
+        Math.max(0, player.bulletTimeRemaining - delta);
+
+      // TODO: these THREE.Meshes could be pooled. Investigate how to do that;
+      // I think it will be separate from Ecsy's component pool, but I wonder
+      // if that code could be reused.
+      let bulletMesh = new THREE.Mesh(this.bulletGeom, this.bulletMat);
+
+      if (!(object.parent instanceof THREE.Scene)) {
+        throw new Error('assumed that the player was a child of the Scene; redo this code so bullets get added to the scene properly');
+      }
+      bulletMesh.position.copy(object.position).addScaledVector(this.up, -0.5);
+      bulletMesh.rotation.copy(object.rotation);
+      bulletMesh.rotateX((Math.random() - 0.5) * 0.1);
+      bulletMesh.rotateY((Math.random() - 0.5) * 0.1);
+      bulletMesh.updateMatrixWorld();
+      this.forwards.copy(FORWARDS).transformDirection(bulletMesh.matrixWorld);
+      object.parent.add(bulletMesh);
+
+      let laserBlast = this.world.createEntity();
+      laserBlast.addComponent(components.Object3D, {object: bulletMesh});
+      laserBlast.addComponent(components.LaserBlast, {
+        // TODO: how does component pooling work with these vectors?
+        velocity: new THREE.Vector3().addScaledVector(this.forwards, 50),
+        ttl: 2,
+      });
+    } else if (this.input.isDown('enter')) {
+      player.bulletTimeRemaining = player.bulletTime;
+    }
+  }
+}
+
+export class LaserBlastSystem extends System {
+  static queries = {
+    blasts: {components: [components.LaserBlast, components.Object3D]},
+  };
+
+  execute(delta) {
+    let entities = this.queries.blasts.results;
+    for (let i = entities.length - 1; i >= 0; i--) { // iterate backwards so we can remove
+      let entity = entities[i];
+      let object = entity.getComponent(components.Object3D).object;
+      let laser = entity.getMutableComponent(components.LaserBlast);
+      object.position.addScaledVector(laser.velocity, delta);
+      laser.ttl -= delta;
+      if (laser.ttl < 0) {
+        object.parent.remove(object);
+        entity.remove();
+      }
+    }
   }
 }
 

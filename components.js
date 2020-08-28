@@ -29,8 +29,17 @@ export class Player extends Component {
       rotSpeedLimit: {type: Types.Number}, // radians/second
       velocity: {type: Types.Ref},
       angularVelocity: {type: Types.Ref},
+      bulletTime: {type: Types.Number},
+      bulletsPerSec: {type: Types.Number},
     };
   }
+}
+
+export class LaserBlast extends Component {
+  static schema = {
+    velocity: {type: Types.Ref},
+    ttl: {type: Types.Number},
+  };
 }
 
 // ---------------------------------------------------------------------------

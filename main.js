@@ -12,10 +12,12 @@ world
   .registerComponent(components.Object3D)
   .registerComponent(components.Asteroid)
   .registerComponent(components.Player)
+  .registerComponent(components.LaserBlast)
 
 world
   .registerSystem(systems.SpinningAsteroids)
   .registerSystem(systems.PlayerMovement)
+  .registerSystem(systems.LaserBlastSystem)
 
 main();
 
@@ -41,6 +43,9 @@ function main() {
     angularDrag: 2,
     velocity: new THREE.Vector3(),
     angularVelocity: new THREE.Vector3(),
+    bulletTime: 1,
+    bulletTimeRemaining: 0,
+    bulletsPerSec: 10,
   });
 
   const root = new THREE.Object3D();
