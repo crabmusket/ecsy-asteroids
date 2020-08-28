@@ -4,11 +4,9 @@ import * as components from './components.js';
 import { Pinput } from './pinput.js';
 
 export class SpinningAsteroids extends System {
-  static get queries() {
-    return {
-      entities: {components: [components.Asteroid, components.Object3D]},
-    };
-  }
+  static queries = {
+    entities: {components: [components.Asteroid, components.Object3D]},
+  };
 
   execute(delta) {
     let entities = this.queries.entities.results;
@@ -28,11 +26,9 @@ const FORWARDS = new THREE.Vector3(0, 0, -1);
 const RIGHT = new THREE.Vector3(1, 0, 0);
 
 export class PlayerMovement extends System {
-  static get queries() {
-    return {
-      entities: {components: [components.Player, components.Object3D]},
-    };
-  }
+  static queries = {
+    entities: {components: [components.Player, components.Object3D]},
+  };
 
   input = new Pinput();
 
