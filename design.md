@@ -2,11 +2,11 @@
 
 ## Evolution
 
-1. ✅ random spheres in space
+1. ✅ random shapes in space with rotation
 2. ✅ flying camera with acceleration
-3. firing lasers
-4. asteroid collision
-5. asteroid meshes + slight rotation
+3. firing lasers with collision
+4. player asteroid collision
+5. asteroid meshes
 6. random mines with meshes
 7. explodey mines
 8. asteroid field generation + orbiting motion, seeding
