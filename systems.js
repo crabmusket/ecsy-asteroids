@@ -2,6 +2,7 @@ import * as THREE from 'https://unpkg.com/three@0.119.1?module';
 import { System } from 'https://unpkg.com/ecsy@0.4.1?module';
 import * as components from './components.js';
 import { Pinput } from './pinput.js';
+import * as layers from './layers.js';
 
 export class SpinningAsteroids extends System {
   static queries = {
@@ -149,6 +150,7 @@ export class PlayerMovement extends System {
       bulletMesh.rotateY((Math.random() - 0.5) * 0.1);
       bulletMesh.rotateZ(Math.random() * Math.PI);
       bulletMesh.updateMatrixWorld();
+      bulletMesh.layers.set(layers.PROJECTILES);
       this.forwards.copy(FORWARDS).transformDirection(bulletMesh.matrixWorld);
       let sprite = new THREE.Sprite(this.spriteMaterial);
       sprite.scale.set(1.2, 1.2, 1.2);

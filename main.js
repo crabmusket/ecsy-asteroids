@@ -4,6 +4,7 @@ import * as THREE from 'https://unpkg.com/three@0.119.1?module';
 import * as Ecsy from 'https://unpkg.com/ecsy@0.4.1?module';
 import * as components from './components.js';
 import * as systems from './systems.js';
+import * as layers from './layers.js';
 import { Gyroscope } from './gyroscope.js';
 
 const world = new Ecsy.World();
@@ -35,6 +36,9 @@ function main() {
   const scene = new THREE.Scene();
 
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.005, 10000);
+  camera.layers.enable(layers.ASTEROIDS);
+  camera.layers.enable(layers.PROJECTILES);
+  camera.layers.enable(layers.DUST);
   camera.add(makeMap());
   scene.add(camera);
   let player = world.createEntity();
@@ -60,13 +64,16 @@ function main() {
 
   let ambientLight = new THREE.AmbientLight(0x111111);
   scene.add(ambientLight);
+  ambientLight.layers.enable(layers.ASTEROIDS);
 
   let directionalLight = new THREE.DirectionalLight(0xffffff, 2);
   directionalLight.position.set(1, 1, 0).normalize();
   scene.add(directionalLight);
+  directionalLight.layers.enable(layers.ASTEROIDS);
 
   for (let i = 0; i < numAsteroids; i += 1) {
     let asteroid = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
+    asteroid.layers.set(layers.ASTEROIDS);
     randomisePosition(asteroid.position, w);
 
     let entity = world.createEntity();
