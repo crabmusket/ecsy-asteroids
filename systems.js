@@ -109,7 +109,14 @@ export class PlayerMovement extends System {
   }
 
   bulletGeom = new THREE.IcosahedronGeometry(0.2);
-  bulletMat = new THREE.MeshBasicMaterial({color: '#f22', emissive: true});
+  bulletMat = new THREE.MeshBasicMaterial({color: '#faa', emissive: true});
+  spriteMaterial = new THREE.SpriteMaterial({
+    map: new THREE.TextureLoader().load('/snowflake1.png'),
+    color: 0xff4444,
+    blending: THREE.AdditiveBlending,
+    depthTest: false,
+    transparent: true,
+  });
 
   // Okay this should _almost certainly_ be a separate system - I'm stretching the
   // the usefulness of having an ECS in the first place by continuing to add player
@@ -133,12 +140,16 @@ export class PlayerMovement extends System {
       if (!(object.parent instanceof THREE.Scene)) {
         throw new Error('assumed that the player was a child of the Scene; redo this code so bullets get added to the scene properly');
       }
-      bulletMesh.position.copy(object.position).addScaledVector(this.up, -0.5);
+      bulletMesh.position.copy(object.position).addScaledVector(this.up, -0.75);
       bulletMesh.rotation.copy(object.rotation);
       bulletMesh.rotateX((Math.random() - 0.5) * 0.1);
       bulletMesh.rotateY((Math.random() - 0.5) * 0.1);
+      bulletMesh.rotateZ(Math.random() * Math.PI);
       bulletMesh.updateMatrixWorld();
       this.forwards.copy(FORWARDS).transformDirection(bulletMesh.matrixWorld);
+      let sprite = new THREE.Sprite(this.spriteMaterial);
+      sprite.scale.set(1.2, 1.2, 1.2);
+      bulletMesh.add(sprite);
       object.parent.add(bulletMesh);
 
       let laserBlast = this.world.createEntity();
