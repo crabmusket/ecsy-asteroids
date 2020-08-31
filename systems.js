@@ -181,10 +181,6 @@ export class LaserBlastSystem extends System {
   raycaster = new THREE.Raycaster();
   intersections = [];
 
-  setParticles(mod) {
-    this.particles = mod;
-  }
-
   init() {
     this.raycaster.layers.set(layers.ASTEROIDS);
   }

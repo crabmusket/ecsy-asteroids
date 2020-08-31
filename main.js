@@ -20,12 +20,7 @@ world
   .registerSystem(systems.PlayerMovement)
   .registerSystem(systems.LaserBlastSystem)
 
-window.THREE = THREE; // TODO: wish we didn't have to bother with this
-import('https://dev.jspm.io/npm:partykals@1.0.2/partykals/index.js')
-  .then(mod => {
-    world.getSystem(systems.LaserBlastSystem).setParticles(mod.default);
-    main();
-  }).catch(e => alert('Loading particle system failed :('));
+main();
 
 function main() {
   const numAsteroids = 1000;
