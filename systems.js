@@ -161,7 +161,8 @@ export class PlayerMovement extends System {
       laserBlast.addComponent(components.Object3D, {object: bulletMesh});
       laserBlast.addComponent(components.LaserBlast, {
         // TODO: how does component pooling work with these vectors?
-        velocity: new THREE.Vector3().addScaledVector(this.forwards, 50),
+        direction: new THREE.Vector3().copy(this.forwards),
+        speed: 50,
         ttl: 2,
       });
     } else if (this.input.isDown('enter')) {
@@ -175,8 +176,17 @@ export class LaserBlastSystem extends System {
     blasts: {components: [components.LaserBlast, components.Object3D]},
   };
 
+  direction = new THREE.Vector3();
+  endpoint = new THREE.Vector3();
+  raycaster = new THREE.Raycaster();
+  intersections = [];
+
   setParticles(mod) {
     this.particles = mod;
+  }
+
+  init() {
+    this.raycaster.layers.set(layers.ASTEROIDS);
   }
 
   execute(delta) {
@@ -185,12 +195,34 @@ export class LaserBlastSystem extends System {
       let entity = entities[i];
       let object = entity.getComponent(components.Object3D).object;
       let laser = entity.getMutableComponent(components.LaserBlast);
-      object.position.addScaledVector(laser.velocity, delta);
+
       laser.ttl -= delta;
       if (laser.ttl < 0) {
         object.parent.remove(object);
         entity.remove();
+        continue;
       }
+
+      if (!laser.speed) {
+        continue;
+      }
+
+      let distance = laser.speed * delta;
+      this.endpoint.copy(object.position).addScaledVector(laser.direction, distance);
+
+      this.raycaster.set(object.position, laser.direction);
+      this.raycaster.far = distance;
+      if (!object.parent.isScene) {
+        throw new Error('assumed parent of projectile would be Scene; rewrite this code for proper raycasting');
+      }
+      this.intersections.length = 0;
+      this.raycaster.intersectObject(object.parent, true, this.intersections);
+      if (this.intersections.length) {
+        this.endpoint.copy(this.intersections[0].point);
+        laser.speed = 0;
+      }
+
+      object.position.copy(this.endpoint);
     }
   }
 }

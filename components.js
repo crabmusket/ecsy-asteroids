@@ -37,7 +37,8 @@ export class Player extends Component {
 
 export class LaserBlast extends Component {
   static schema = {
-    velocity: {type: Types.Ref},
+    direction: {type: Types.Ref},
+    speed: {type: Types.Number},
     ttl: {type: Types.Number},
   };
 }
