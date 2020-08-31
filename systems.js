@@ -44,6 +44,19 @@ export class PlayerMovement extends System {
   drag = new THREE.Vector3();
   angDrag = new THREE.Vector3();
 
+  init() {
+    this.bulletGeom = new THREE.IcosahedronGeometry(0.2);
+    this.bulletMat = new THREE.MeshBasicMaterial({color: '#faa', emissive: true});
+    this.spriteTexture = new THREE.TextureLoader().load('/snowflake1.png');
+    this.spriteMaterial = new THREE.SpriteMaterial({
+      map: this.spriteTexture,
+      color: 0xff4444,
+      blending: THREE.AdditiveBlending,
+      depthTest: false,
+      transparent: true,
+    });
+  }
+
   execute(delta) {
     this.input.update();
 
@@ -107,16 +120,6 @@ export class PlayerMovement extends System {
     player.velocity.clampLength(0, player.speedLimit);
     object.position.addScaledVector(player.velocity, delta);
   }
-
-  bulletGeom = new THREE.IcosahedronGeometry(0.2);
-  bulletMat = new THREE.MeshBasicMaterial({color: '#faa', emissive: true});
-  spriteMaterial = new THREE.SpriteMaterial({
-    map: new THREE.TextureLoader().load('/snowflake1.png'),
-    color: 0xff4444,
-    blending: THREE.AdditiveBlending,
-    depthTest: false,
-    transparent: true,
-  });
 
   // Okay this should _almost certainly_ be a separate system - I'm stretching the
   // the usefulness of having an ECS in the first place by continuing to add player
