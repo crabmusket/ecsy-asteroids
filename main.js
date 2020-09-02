@@ -14,11 +14,13 @@ world
   .registerComponent(components.Asteroid)
   .registerComponent(components.Player)
   .registerComponent(components.LaserBlast)
+  .registerComponent(components.Explosion)
 
 world
   .registerSystem(systems.SpinningAsteroids)
   .registerSystem(systems.PlayerMovement)
   .registerSystem(systems.LaserBlastSystem)
+  .registerSystem(systems.ExplosionSystem)
 
 main();
 

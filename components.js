@@ -43,6 +43,8 @@ export class LaserBlast extends Component {
   };
 }
 
+export class Explosion extends TagComponent {}
+
 // ---------------------------------------------------------------------------
 
 class Collidable extends TagComponent {}

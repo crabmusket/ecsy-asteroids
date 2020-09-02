@@ -1,5 +1,5 @@
 import * as THREE from 'https://unpkg.com/three@0.119.1?module';
-import { System } from 'https://unpkg.com/ecsy@0.4.1?module';
+import { System, Not } from 'https://unpkg.com/ecsy@0.4.1?module';
 import * as components from './components.js';
 import { Pinput } from './pinput.js';
 import * as layers from './layers.js';
@@ -216,9 +216,68 @@ export class LaserBlastSystem extends System {
       if (this.intersections.length) {
         this.endpoint.copy(this.intersections[0].point);
         laser.speed = 0;
+        this.createExplosion(object.parent, this.endpoint, this.intersections[0].face.normal);
       }
 
       object.position.copy(this.endpoint);
+    }
+  }
+
+  createExplosion(container, pos, normal) {
+    let group = new THREE.Group();
+    group.position.copy(pos);
+    group.scale.set(0.05, 0.05, 0.05);
+    container.add(group);
+    this.world.createEntity()
+      .addComponent(components.Explosion)
+      .addComponent(components.Object3D, {object: group});
+  }
+}
+
+export class ExplosionSystem extends System {
+  static queries = {
+    explosions: {components: [components.Explosion, components.Object3D]},
+  };
+
+  init() {
+    this.geometries = [];
+
+    for (let i = 0; i < 5; i += 1) {
+      let vertices = [];
+      for (let j = 0; j < 100; j += 1) {
+        let x = THREE.MathUtils.randFloatSpread(4);
+        let y = THREE.MathUtils.randFloatSpread(4);
+        let z = THREE.MathUtils.randFloatSpread(4);
+        vertices.push(x, y, z);
+      }
+
+      let geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+      this.geometries.push(geometry);
+    }
+
+    this.material = new THREE.PointsMaterial({color: 0xffffff, transparent: true, opacity: 0.9});
+  }
+
+  execute(delta) {
+    let entities = this.queries.explosions.results;
+    for (let i = entities.length - 1; i >= 0; i--) { // iterate backwards so we can remove
+      let entity = entities[i];
+      let object = entity.getComponent(components.Object3D).object;
+      object.scale.addScalar(delta * 3);
+      if (object.scale.lengthSq() > 9) {
+        entity.remove();
+        object.parent.remove(object);
+        continue;
+      }
+
+      object.rotateZ(delta);
+
+      if (!object.children.length) {
+        let geometry = this.geometries[Math.floor(Math.random() * this.geometries.length)];
+        let points = new THREE.Points(geometry, this.material);
+        object.add(points);
+      }
     }
   }
 }
