@@ -48,7 +48,7 @@ export class PlayerMovement extends System {
   init() {
     this.bulletGeom = new THREE.IcosahedronGeometry(0.2);
     this.bulletMat = new THREE.MeshBasicMaterial({color: '#faa', emissive: true});
-    this.spriteTexture = new THREE.TextureLoader().load('/snowflake1.png');
+    this.spriteTexture = new THREE.TextureLoader().load('./snowflake1.png');
     this.spriteMaterial = new THREE.SpriteMaterial({
       map: this.spriteTexture,
       color: 0xff4444,
