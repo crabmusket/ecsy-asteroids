@@ -227,6 +227,7 @@ export class LaserBlastSystem extends System {
     let group = new THREE.Group();
     group.position.copy(pos);
     group.scale.set(0.05, 0.05, 0.05);
+    group.lookAt(group.position.clone().add(normal));
     container.add(group);
     this.world.createEntity()
       .addComponent(components.Explosion)
@@ -242,13 +243,16 @@ export class ExplosionSystem extends System {
   init() {
     this.geometries = [];
 
+    let dir = new THREE.Vector3();
     for (let i = 0; i < 5; i += 1) {
       let vertices = [];
-      for (let j = 0; j < 100; j += 1) {
-        let x = THREE.MathUtils.randFloatSpread(4);
-        let y = THREE.MathUtils.randFloatSpread(4);
-        let z = THREE.MathUtils.randFloatSpread(4);
-        vertices.push(x, y, z);
+      for (let j = 0; j < 50; j += 1) {
+        dir.set(0, 0, 1);
+        let scale = THREE.MathUtils.randFloat(0, 4);
+        dir.multiplyScalar(scale);
+        dir.x = THREE.MathUtils.randFloatSpread(scale);
+        dir.y = THREE.MathUtils.randFloatSpread(scale);
+        vertices.push(dir.x, dir.y, dir.z);
       }
 
       let geometry = new THREE.BufferGeometry();
@@ -256,7 +260,7 @@ export class ExplosionSystem extends System {
       this.geometries.push(geometry);
     }
 
-    this.material = new THREE.PointsMaterial({color: 0xffffff, transparent: true, opacity: 0.9});
+    this.material = new THREE.PointsMaterial({color: 0xffffff, transparent: true, opacity: 0.8});
   }
 
   execute(delta) {
@@ -270,8 +274,6 @@ export class ExplosionSystem extends System {
         object.parent.remove(object);
         continue;
       }
-
-      object.rotateZ(delta);
 
       if (!object.children.length) {
         let geometry = this.geometries[Math.floor(Math.random() * this.geometries.length)];
